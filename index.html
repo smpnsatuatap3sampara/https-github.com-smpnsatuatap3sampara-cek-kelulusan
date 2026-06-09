@@ -1,248 +1,329 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <title>PENGUMUAN KELULUSAN SMPN SATU ATAP 3 SAMPARA</title>
-  <style>
-    :root {
-      --container-width: 500px;
-      --container-padding: 30px;
-      --container-border-radius: 14px;
-      --logo-width: 500px;
-      --logo-margin-bottom: 25px;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f9f9f9;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 30px 20px 50px;
-      margin: 0;
-      min-height: 100vh;
-      color: #000000;
-    }
-
-    #container {
-      width: var(--container-width);
-      padding: var(--container-padding);
-      background-color: #d6e4ff;
-      border-radius: var(--container-border-radius);
-      box-shadow: 0 4px 10px rgba(0, 123, 255, 0.25);
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    #logo-container img {
-      width: var(--logo-width);
-      height: auto;
-      margin-bottom: var(--logo-margin-bottom);
-      display: block;
-      user-select: none;
-    }
-
-    #info-text {
-      font-size: 18px;
-      font-weight: 600;
-      color: #0055ff;
-      margin-bottom: 12px;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      text-align: center;
-      user-select: none;
-    }
-
-    #countdown {
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-      margin-bottom: 30px;
-      width: 100%;
-      max-width: 420px;
-    }
-
-    .count-box {
-      background-color: #ffffff;
-      border: 2px solid #0055ff;
-      border-radius: 12px;
-      padding: 10px 15px;
-      min-width: 65px;
-      text-align: center;
-      box-shadow: 0 2px 6px rgba(0,85,255,0.15);
-      user-select: none;
-      transition: transform 0.2s ease;
-    }
-
-    .count-box:hover {
-      transform: scale(1.05);
-      border-color: #003fcc;
-      box-shadow: 0 4px 12px rgba(0,85,255,0.3);
-    }
-
-    .count-box span {
-      display: block;
-      font-size: 20px;
-      font-weight: bold;
-      color: #0055ff;
-    }
-
-    .count-label {
-      font-size: 12px;
-      color: #333;
-      margin-top: 4px;
-    }
-
-    #form-input {
-      display: none;
-      flex-direction: column;
-      width: 100%;
-    }
-
-    #form-input input[type="text"] {
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
-
-    #form-input button {
-      background-color: #0055ff;
-      color: white;
-      border: none;
-      padding: 12px;
-      font-size: 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      user-select: none;
-    }
-
-    #form-input button:hover {
-      background-color: #003fcc;
-    }
-
-    #hasil {
-      margin-top: 20px;
-      font-weight: 600;
-      color: #000;
-      text-align: center;
-      min-height: 50px;
-      user-select: text;
-      line-height: 1.4;
-      width: 100%;
-    }
-
-    /* Footer copyright */
-    footer {
-      margin-top: 25px;
-      font-size: 13px;
-      color: #555555;
-      text-align: center;
-      user-select: none;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-  </style>
-</head>
-<body>
-  <div id="container">
-    <div id="logo-container">
-      <img src="PENGUMUMAN HASIL KELULUSAN.png" alt="Logo Kelulusan" />
-    </div>
-
-    <div id="info-text">Pengumuman akan dibuka dalam waktu:</div>
-
-    <div id="countdown">
-      <div class="count-box">
-        <span id="days">0</span>
-        <div class="count-label">Hari</div>
-      </div>
-      <div class="count-box">
-        <span id="hours">0</span>
-        <div class="count-label">Jam</div>
-      </div>
-      <div class="count-box">
-        <span id="minutes">0</span>
-        <div class="count-label">Menit</div>
-      </div>
-      <div class="count-box">
-        <span id="seconds">0</span>
-        <div class="count-label">Detik</div>
-      </div>
-    </div>
-
-    <div id="form-input">
-      <input type="text" id="nama" placeholder="Masukkan Nama" />
-      <input type="text" id="nisn" placeholder="Masukkan NISN" />
-      <button onclick="cekKelulusan()">Cek Kelulusan</button>
-    </div>
-
-    <div id="hasil"></div>
-  </div>
-
-  <script>
-    const targetDate = new Date("2026-06-02T12:00:00").getTime();
-
-    const countdownInterval = setInterval(function () {
-      const now = new Date().getTime();
-      const distance = targetDate - now;
-
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      document.getElementById("days").textContent = days >= 0 ? days : 0;
-      document.getElementById("hours").textContent = hours >= 0 ? hours : 0;
-      document.getElementById("minutes").textContent = minutes >= 0 ? minutes : 0;
-      document.getElementById("seconds").textContent = seconds >= 0 ? seconds : 0;
-
-      if (distance < 0) {
-        clearInterval(countdownInterval);
-        document.getElementById("countdown").style.display = "none";
-        document.getElementById("info-text").style.display = "none";
-        document.getElementById("form-input").style.display = "flex";
-      }
-    }, 1000);
-
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxsPLtHiF_eVcoRRuM1e3BP9S1rALR4G8RDJUEwSfqJrc8lEA2fCNr8r10ErJB5iHxw1g/exec';
-
-    function cekKelulusan() {
-      const nama = document.getElementById('nama').value.trim();
-      const nisn = document.getElementById('nisn').value.trim();
-      const hasil = document.getElementById('hasil');
-
-      if (!nama || !nisn) {
-        hasil.textContent = 'Mohon isi Nama dan NISN.';
-        return;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PENGUMUAN KELULUSAN SMPN SATU ATAP 3 SAMPARA</title>
+    <style>
+      :root {
+        --container-width: 500px;
+        --container-padding: 30px;
+        --container-border-radius: 14px;
+        --logo-width: 500px;
+        --logo-margin-bottom: 25px;
       }
 
-      hasil.textContent = 'Sedang memeriksa...';
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #f9f9f9;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 30px 20px 50px;
+        margin: 0;
+        min-height: 100vh;
+        color: #000000;
+      }
 
-      fetch(`${GAS_URL}?nama=${encodeURIComponent(nama)}&nisn=${encodeURIComponent(nisn)}`)
-        .then(res => res.json())
-        .then(data => {
-          const statusText = data.statusKelulusan || '';
+      #container {
+        width: var(--container-width);
+        padding: var(--container-padding);
+        background-color: #d6e4ff;
+        border-radius: var(--container-border-radius);
+        box-shadow: 0 4px 10px rgba(0, 123, 255, 0.25);
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
 
-          if (statusText.toLowerCase().includes("lulus")) {
-            const warnaHijau = `<span style="color:green;font-weight:bold;">LULUS</span>`;
-            hasil.innerHTML = 
-              `PESERTA ATAS NAMA <strong>${nama}</strong> DENGAN NISN <strong>${nisn}</strong> DINYATAKAN ${warnaHijau}<br>TETAP SEMANGAT!`;
-          } else {
-            hasil.textContent = statusText;
-          }
-        })
-        .catch(err => {
-          hasil.textContent = 'Terjadi kesalahan: ' + err.message;
-        });
-    }
+      #logo-container img {
+        width: var(--logo-width);
+        height: auto;
+        margin-bottom: var(--logo-margin-bottom);
+        display: block;
+        user-select: none;
+      }
 
-  </script>
-   <footer>
-    © 2025 SMPN Satu Atap 3 Sampara. All rights reserved.
-  </footer>
-</body>
+      #info-text {
+        font-size: 18px;
+        font-weight: 600;
+        color: #0055ff;
+        margin-bottom: 12px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        text-align: center;
+        user-select: none;
+      }
+
+      #countdown {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 30px;
+        width: 100%;
+        max-width: 420px;
+      }
+
+      .count-box {
+        background-color: #ffffff;
+        border: 2px solid #0055ff;
+        border-radius: 12px;
+        padding: 10px 15px;
+        min-width: 65px;
+        text-align: center;
+        box-shadow: 0 2px 6px rgba(0, 85, 255, 0.15);
+        user-select: none;
+        transition: transform 0.2s ease;
+      }
+
+      .count-box:hover {
+        transform: scale(1.05);
+        border-color: #003fcc;
+        box-shadow: 0 4px 12px rgba(0, 85, 255, 0.3);
+      }
+
+      .count-box span {
+        display: block;
+        font-size: 20px;
+        font-weight: bold;
+        color: #0055ff;
+      }
+
+      .count-label {
+        font-size: 12px;
+        color: #333;
+        margin-top: 4px;
+      }
+
+      #form-input {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      #form-input input[type="text"] {
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 16px;
+        box-sizing: border-box;
+      }
+
+      #form-input button {
+        background-color: #0055ff;
+        color: white;
+        border: none;
+        padding: 12px;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        user-select: none;
+      }
+
+      #form-input button:hover {
+        background-color: #003fcc;
+      }
+
+      #hasil {
+        margin-top: 20px;
+        font-weight: 600;
+        color: #000;
+        text-align: center;
+        min-height: 50px;
+        user-select: text;
+        line-height: 1.4;
+        width: 100%;
+      }
+
+      /* Footer copyright */
+      footer {
+        margin-top: 25px;
+        font-size: 13px;
+        color: #555555;
+        text-align: center;
+        user-select: none;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      /* RESPONSIVE MOBILE */
+@media (max-width: 768px) {
+  :root {
+    --container-width: 100%;
+    --container-padding: 20px;
+    --logo-width: 100%;
+    --logo-margin-bottom: 20px;
+  }
+
+  body {
+    padding: 15px;
+  }
+
+  #container {
+    width: 100%;
+    max-width: 500px;
+  }
+
+  #logo-container img {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  #info-text {
+    font-size: 16px;
+  }
+
+  #countdown {
+    gap: 8px;
+  }
+
+  .count-box {
+    min-width: 0;
+    flex: 1;
+    padding: 10px 5px;
+  }
+
+  .count-box span {
+    font-size: 18px;
+  }
+
+  .count-label {
+    font-size: 11px;
+  }
+
+  #form-input input[type="text"] {
+    font-size: 16px;
+  }
+
+  #form-input button {
+    font-size: 16px;
+  }
+
+  footer {
+    font-size: 12px;
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  #info-text {
+    font-size: 14px;
+  }
+
+  .count-box span {
+    font-size: 16px;
+  }
+
+  .count-label {
+    font-size: 10px;
+  }
+
+  .count-box {
+    padding: 8px 3px;
+  }
+}
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div id="logo-container">
+        <img src="PENGUMUMAN HASIL KELULUSAN.png" alt="Logo Kelulusan" />
+      </div>
+
+      <div id="info-text">Pengumuman akan dibuka dalam waktu:</div>
+
+      <div id="countdown">
+        <div class="count-box">
+          <span id="days">0</span>
+          <div class="count-label">Hari</div>
+        </div>
+        <div class="count-box">
+          <span id="hours">0</span>
+          <div class="count-label">Jam</div>
+        </div>
+        <div class="count-box">
+          <span id="minutes">0</span>
+          <div class="count-label">Menit</div>
+        </div>
+        <div class="count-box">
+          <span id="seconds">0</span>
+          <div class="count-label">Detik</div>
+        </div>
+      </div>
+
+      <div id="form-input">
+        <input type="text" id="nama" placeholder="Masukkan Nama" />
+        <input type="text" id="nisn" placeholder="Masukkan NISN" />
+        <button onclick="cekKelulusan()">Cek Kelulusan</button>
+      </div>
+
+      <div id="hasil"></div>
+    </div>
+
+    <script>
+      const targetDate = new Date("2026-06-02T12:00:00").getTime();
+
+      const countdownInterval = setInterval(function () {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+        );
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("days").textContent = days >= 0 ? days : 0;
+        document.getElementById("hours").textContent = hours >= 0 ? hours : 0;
+        document.getElementById("minutes").textContent =
+          minutes >= 0 ? minutes : 0;
+        document.getElementById("seconds").textContent =
+          seconds >= 0 ? seconds : 0;
+
+        if (distance < 0) {
+          clearInterval(countdownInterval);
+          document.getElementById("countdown").style.display = "none";
+          document.getElementById("info-text").style.display = "none";
+          document.getElementById("form-input").style.display = "flex";
+        }
+      }, 1000);
+
+      const GAS_URL =
+        "https://script.google.com/macros/s/AKfycbxsPLtHiF_eVcoRRuM1e3BP9S1rALR4G8RDJUEwSfqJrc8lEA2fCNr8r10ErJB5iHxw1g/exec";
+
+      function cekKelulusan() {
+        const nama = document.getElementById("nama").value.trim();
+        const nisn = document.getElementById("nisn").value.trim();
+        const hasil = document.getElementById("hasil");
+
+        if (!nama || !nisn) {
+          hasil.textContent = "Mohon isi Nama dan NISN.";
+          return;
+        }
+
+        hasil.textContent = "Sedang memeriksa...";
+
+        fetch(
+          `${GAS_URL}?nama=${encodeURIComponent(nama)}&nisn=${encodeURIComponent(nisn)}`,
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            const statusText = data.statusKelulusan || "";
+
+            if (statusText.toLowerCase().includes("lulus")) {
+              const warnaHijau = `<span style="color:green;font-weight:bold;">LULUS</span>`;
+              hasil.innerHTML = `PESERTA ATAS NAMA <strong>${nama}</strong> DENGAN NISN <strong>${nisn}</strong> DINYATAKAN ${warnaHijau}<br>TETAP SEMANGAT!`;
+            } else {
+              hasil.textContent = statusText;
+            }
+          })
+          .catch((err) => {
+            hasil.textContent = "Terjadi kesalahan: " + err.message;
+          });
+      }
+    </script>
+    <footer>© 2025 SMPN Satu Atap 3 Sampara. All rights reserved.</footer>
+  </body>
 </html>
