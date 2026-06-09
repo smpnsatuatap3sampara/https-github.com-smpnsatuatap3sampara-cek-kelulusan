@@ -223,6 +223,15 @@
     padding: 8px 3px;
   }
 }
+
+#foto-siswa {
+  width: 150px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 3px solid #0055ff;
+  margin-bottom: 15px;
+}
     </style>
   </head>
   <body>
@@ -313,9 +322,29 @@
             const statusText = data.statusKelulusan || "";
 
             if (statusText.toLowerCase().includes("lulus")) {
-              const warnaHijau = `<span style="color:green;font-weight:bold;">LULUS</span>`;
-              hasil.innerHTML = `PESERTA ATAS NAMA <strong>${nama}</strong> DENGAN NISN <strong>${nisn}</strong> DINYATAKAN ${warnaHijau}<br>TETAP SEMANGAT!`;
-            } else {
+  const warnaHijau = `<span style="color:green;font-weight:bold;">LULUS</span>`;
+
+  const fotoUrl = `foto/${nisn}.png`;
+
+  hasil.innerHTML = `
+    <img
+      id="foto-siswa"
+      src="${fotoUrl}"
+      alt="Foto Siswa"
+      onerror="this.style.display='none'"
+    >
+
+    <br>
+
+    PESERTA ATAS NAMA
+    <strong>${nama}</strong>
+    DENGAN NISN
+    <strong>${nisn}</strong>
+    DINYATAKAN ${warnaHijau}
+    <br>
+    TETAP SEMANGAT!
+  `;
+          }    else {
               hasil.textContent = statusText;
             }
           })
